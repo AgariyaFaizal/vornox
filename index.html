@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ShopMock — Polo T-Shirt for Men</title>
+
+  <!-- Optional: Google Font (works in browser) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#fff;
+      --muted:#6b7280;
+      --accent:#1f7aef;
+      --price:#111827;
+      --danger:#e11d48;
+      --shadow: 0 6px 18px rgba(18,24,40,0.08);
+      --radius:10px;
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin:0; background:var(--bg); color:#111827;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+
+    .container{
+      max-width:1200px;
+      margin:28px auto;
+      padding:20px;
+      display:grid;
+      grid-template-columns: 1fr 1.1fr 360px; /* left gallery, center details, right buy box */
+      gap:20px;
+    }
+
+    /* Left gallery */
+    .gallery{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+      display:flex;
+      gap:12px;
+    }
+    .thumbs{
+      width:88px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .thumbs img{
+      width:88px; height:88px; object-fit:cover; border-radius:8px; cursor:pointer;
+      border:2px solid transparent;
+    }
+    .thumbs img.active { border-color:var(--accent); }
+
+    .main-image{
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px;
+    }
+    .main-image img{
+      max-width:100%;
+      max-height:520px;
+      border-radius:10px;
+      object-fit:cover;
+    }
+
+    /* Center details */
+    .details{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .breadcrumbs{ font-size:13px; color:var(--muted) }
+    .title{
+      font-size:20px; font-weight:700; margin-top:6px;
+    }
+    .meta{
+      display:flex; align-items:center; gap:12px; color:var(--muted); font-size:14px;
+    }
+    .rating{
+      background:#f8fafc; padding:6px 8px; border-radius:6px; font-weight:600; color:#0f172a;
+      display:inline-flex; gap:8px; align-items:center;
+    }
+    .sold{ color:var(--muted); font-size:13px }
+
+    .price-row{ display:flex; align-items:baseline; gap:12px; margin-top:6px; }
+    .price{ font-size:28px; font-weight:800; color:var(--price) }
+    .mrp{ text-decoration:line-through; color:var(--muted) }
+    .discount{ color:var(--danger); font-weight:700 }
+
+    .offers{
+      margin-top:8px;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .offer{
+      background:#fff7ed; color:#92400e; padding:8px 10px; border-radius:8px; font-size:13px; border:1px solid #ffd8a8;
+    }
+
+    .size-row{ margin-top:14px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+    .size{
+      border:1px solid #e6e7eb; padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:600;
+      background:#fff;
+    }
+    .size.active{ border-color:var(--accent); background:linear-gradient(180deg,#eef6ff,#fff); color:var(--accent) }
+
+    /* Right buy panel */
+    .buy{
+      position:sticky; top:28px;
+      background:var(--card); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);
+      display:flex; flex-direction:column; gap:12px;
+      min-height:240px;
+    }
+    .price-right{ font-size:22px; font-weight:800; color:var(--price) }
+    .tax{ font-size:13px; color:var(--muted) }
+    .delivery{ font-size:13px; color:var(--muted) }
+    .qty{ display:flex; gap:8px; align-items:center; }
+    .select{ padding:8px; border-radius:8px; border:1px solid #e6e7eb; background:#fff }
+
+    .btn-primary{
+      background:linear-gradient(180deg,var(--accent),#0b63d8); color:#fff; border:none; padding:12px 14px; border-radius:8px;
+      font-weight:700; cursor:pointer; box-shadow:0 6px 16px rgba(31,122,239,0.18);
+    }
+    .btn-ghost{
+      border:1px solid #e6e7eb; background:#fff; padding:10px 12px; border-radius:8px; cursor:pointer;
+    }
+
+    /* Product details below */
+    .below{
+      grid-column:1 / -1; display:grid; grid-template-columns: 1fr 360px; gap:20px; margin-top:18px;
+    }
+    .prod-details{
+      background:var(--card); padding:18px; border-radius:var(--radius); box-shadow:var(--shadow);
+    }
+    .prod-details h3{ margin-top:0 }
+    .specs{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; color:var(--muted) }
+    .specs dt{ font-weight:700; color:#111827; }
+    .about{ margin-top:12px; color:var(--muted); line-height:1.5; }
+
+    /* small screens */
+    @media (max-width:1024px){
+      .container{ grid-template-columns: 1fr; padding:14px; }
+      .below{ grid-template-columns:1fr; }
+      .buy{ position:relative; top:auto; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container" aria-label="Product page container">
+
+    <!-- LEFT: Gallery -->
+    <div class="gallery" aria-hidden="false">
+      <div class="thumbs" id="thumbs" aria-label="Thumbnails">
+        <img src="c:\faizal\sem 3\DM\web\i1.webp" alt="thumb1" class="active" data-full="c:\faizal\sem 3\DM\web\i1.webp">
+        <img src="c:\faizal\sem 3\DM\web\i2.webp" alt="thumb2" data-full="c:\faizal\sem 3\DM\web\i2.webp">
+        <img src="c:\faizal\sem 3\DM\web\i3.webp" alt="thumb3" data-full="c:\faizal\sem 3\DM\web\i3.webp">
+        <img src="c:\faizal\sem 3\DM\web\i4.webp" alt="thumb4" data-full="c:\faizal\sem 3\DM\web\i4.webp">
+      </div>
+
+      <div class="main-image" id="mainImageContainer">
+        <img id="mainImage" src="https://via.placeholder.com/900x900.png?text=Beige+Front" alt="Main product image — beige polo t-shirt">
+      </div>
+    </div>
+
+    <!-- CENTER: Product details -->
+    <div class="details" role="region" aria-label="Product details">
+      <div class="breadcrumbs">Clothing & Accessories &gt; Men &gt; T-shirts, Polos &amp; Shirts &gt; Polos</div>
+
+      <div class="title">Lymio Polo T-Shirt for Men | Men Casual T-Shirt | Available in Combo Packs (Polo 40 to 43)</div>
+
+      <div class="meta">
+        <div class="rating" title="4.1 out of 5">★ 4.1</div>
+        <div class="sold">2,270 ratings • 800+ bought in past month</div>
+      </div>
+
+      <div class="price-row">
+        <div>
+          <div class="price">₹379</div>
+          <div class="mrp">M.R.P.: <span style="text-decoration:line-through">₹4,999</span></div>
+        </div>
+        <div style="margin-left:auto; text-align:right;">
+          <div class="discount">-95% off</div>
+        </div>
+      </div>
+
+      <div class="offers" aria-label="Offers">
+        <div class="offer">Cashback: Up to ₹111.00 as Amazon Pay Balance</div>
+        <div class="offer">Bank Offer: Up to ₹3,000.00 discount on select cards</div>
+        <div class="offer">Partner Offer: Save up to GST</div>
+      </div>
+
+      <div class="size-row" aria-label="Size selector">
+        <div style="font-weight:700; color:var(--muted);">Size:</div>
+        <button class="size">S</button>
+        <button class="size active">M</button>
+        <button class="size">L</button>
+        <button class="size">XL</button>
+        <button class="size">2XL</button>
+      </div>
+
+      <div style="margin-top:10px;" aria-hidden="false">
+        <div style="font-weight:700; margin-bottom:6px;">Product details</div>
+        <dl class="specs" role="list">
+          <div>
+            <dt>Material composition</dt>
+            <dd>Cotton Blend</dd>
+          </div>
+          <div>
+            <dt>Pattern</dt>
+            <dd>Solid</dd>
+          </div>
+          <div>
+            <dt>Fit type</dt>
+            <dd>Regular Fit</dd>
+          </div>
+          <div>
+            <dt>Sleeve type</dt>
+            <dd>Half Sleeve</dd>
+          </div>
+          <div>
+            <dt>Collar style</dt>
+            <dd>Polo Collar</dd>
+          </div>
+          <div>
+            <dt>Country of Origin</dt>
+            <dd>India</dd>
+          </div>
+        </dl>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Buy panel -->
+    <aside class="buy" aria-label="Purchase options">
+      <div>
+        <div style="font-size:13px;color:var(--muted)">Price:</div>
+        <div class="price-right">₹379</div>
+        <div class="tax">Inclusive of all taxes</div>
+      </div>
+
+      <div>
+        <div class="delivery">FREE delivery Saturday, 11 October — Or fastest delivery Friday, 10 October</div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="qty">
+          <label for="qty" style="font-size:13px;color:var(--muted)">Quantity</label>
+          <select id="qty" class="select" aria-label="Select quantity">
+            <option>1</option><option>2</option><option>3</option>
+          </select>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:13px;color:var(--muted)">Ships from</div>
+          <div style="font-weight:700">Vornox</div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px;">
+        <button class="btn-primary" id="addToCart">Add to Cart</button>
+        <button class="btn-ghost">Buy Now</button>
+      </div>
+
+      <div style="font-size:13px;color:var(--muted); margin-top:8px;">
+        In stock • Sold by Cocoblu Retail • Payment: Credit/Debit cards, UPI &amp; more
+      </div>
+    </aside>
+
+    <!-- BELOW: long product details + image strip -->
+    <div class="below">
+      <div class="prod-details" aria-label="About this item">
+        <h3>About this item</h3>
+        <p class="about">
+          Men T-Shirt || T-Shirt for Men || Polo T Shirt || T-Shirt (Pack of 2). Regular fit for a comfortable and relaxed feel.
+          Stylish design gives you a perfect and fashionable look whenever you wear it. Available in multiple colours and sizes.
+        </p>
+
+        <ul style="margin-top:12px; color:var(--muted)">
+          <li>Material: Cotton blend — soft & breathable</li>
+          <li>Care instructions: Machine wash cold with similar colors</li>
+          <li>Return policy: 10 days easy return</li>
+        </ul>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div style="background:var(--card); padding:12px; border-radius:10px; box-shadow:var(--shadow);">
+          <img src="https://via.placeholder.com/320x240.png?text=Banner+1" alt="promo" style="width:100%; border-radius:8px; object-fit:cover">
+        </div>
+        <div style="background:var(--card); padding:12px; border-radius:10px; box-shadow:var(--shadow);">
+          <img src="https://via.placeholder.com/320x240.png?text=Banner+2" alt="promo2" style="width:100%; border-radius:8px; object-fit:cover">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Thumbnail click -> change main image
+    const thumbs = document.querySelectorAll('#thumbs img');
+    const mainImage = document.getElementById('mainImage');
+    thumbs.forEach(t => {
+      t.addEventListener('click', () => {
+        thumbs.forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        const full = t.getAttribute('data-full');
+        if(full) mainImage.src = full;
+      });
+    });
+
+    // Size selector
+    const sizes = document.querySelectorAll('.size');
+    sizes.forEach(s => s.addEventListener('click', () => {
+      sizes.forEach(x=>x.classList.remove('active'));
+      s.classList.add('active');
+    }));
+
+    // Add to cart click demo
+    document.getElementById('addToCart').addEventListener('click', () => {
+      const size = document.querySelector('.size.active')?.textContent || 'M';
+      const qty = document.getElementById('qty').value;
+      alert(`Added to cart:\nProduct: Lymio Polo T-Shirt\nSize: ${size}\nQuantity: ${qty}\nPrice: ₹379`);
+    });
+  </script>
+
+</body>
+</html>
+
+
+<!-- CUSTOMER REVIEWS -->
+<div style="max-width: 1200px; margin: 40px auto; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,0.06);">
+    <h2 style="font-size: 20px; margin-bottom: 20px;">Top reviews from India</h2>
+  
+    <!-- REVIEW 1 -->
+    <div style="border-bottom: 1px solid #eee; padding-bottom: 16px; margin-bottom: 16px;">
+      <div style="font-weight: 600; margin-bottom: 4px;">Mahadevan</div>
+      <div style="color: #e47911;">★★★★★</div>
+      <div style="font-weight: bold; margin-top: 4px;">This is not what I expected</div>
+      <div style="color: #555; font-size: 13px;">Reviewed in India on 4 October 2025</div>
+      <div style="margin-top: 10px;">Perfect fit but it's not polio flexible cotton. Very expensive for ₹2999. Found some greyish dirt on the t-shirt. I ordered flexible polyester polo t-shirt but this isn’t it.</div>
+      <img src="c:\faizal\sem 3\DM\web\i1.webp" alt="Review Image" style="margin-top: 10px; width: 140px; border-radius: 4px;">
+    </div>
+  
+    <!-- REVIEW 2 -->
+    <div style="border-bottom: 1px solid #eee; padding-bottom: 16px; margin-bottom: 16px;">
+      <div style="font-weight: 600; margin-bottom: 4px;">Ravi Sharma</div>
+      <div style="color: #e47911;">★★★★☆</div>
+      <div style="font-weight: bold; margin-top: 4px;">Good quality, but not worth full price</div>
+      <div style="color: #555; font-size: 13px;">Reviewed in India on 2 October 2025</div>
+      <div style="margin-top: 10px;">T-shirt looks nice and fits well. Fabric is okay but not premium. I bought it for ₹379, so not complaining. But MRP ₹2999 is just too much.</div>
+    </div>
+  
+    <!-- REVIEW 3 -->
+    <div style="border-bottom: 1px solid #eee; padding-bottom: 16px; margin-bottom: 16px;">
+      <div style="font-weight: 600; margin-bottom: 4px;">Anjali Verma</div>
+      <div style="color: #e47911;">★★★☆☆</div>
+      <div style="font-weight: bold; margin-top: 4px;">Not as shown in pictures</div>
+      <div style="color: #555; font-size: 13px;">Reviewed in India on 28 September 2025</div>
+      <div style="margin-top: 10px;">Color is different than shown. Quality is average. Delivery was on time but packaging could be better.</div>
+    </div>
+  
+    <!-- REVIEW 4 -->
+    <div>
+      <div style="font-weight: 600; margin-bottom: 4px;">Kunal Desai</div>
+      <div style="color: #e47911;">★★★★★</div>
+      <div style="font-weight: bold; margin-top: 4px;">Value for money!</div>
+      <div style="color: #555; font-size: 13px;">Reviewed in India on 25 September 2025</div>
+      <div style="margin-top: 10px;">I ordered a pack of 2 and both shirts were good quality. Comfortable and fit well. Worth every rupee at this price.</div>
+    </div>
+  </div>
+  
+
